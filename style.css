@@ -1,0 +1,474 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+.container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.column {
+    width: 25%;
+    padding: 1rem;
+    border-right: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Path Window */
+#path-window {
+    background-color: #fff;
+}
+
+.path-container {
+    flex: 1;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#hex-grid {
+    width: 100%;
+    height: 5000px; /* Adjust based on path length */
+    position: relative;
+}
+
+#slider-container {
+    display: none;
+}
+
+#path-slider {
+    width: 100%;
+}
+
+/* squares styles */
+.hexagon {
+    fill: #e0e0e0;
+    stroke: #999;
+    stroke-width: 2px;
+    transition: fill 0.3s;
+}
+
+.hexagon:hover {
+    fill: #b0b0b0;
+    cursor: pointer;
+}
+
+.hexagon.active {
+    fill: #4CAF50;
+}
+
+/* Mission and Status Windows */
+#mission-window, #status-window {
+    height: 50%;
+    background-color: #fff;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    overflow-y: auto;
+}
+
+/* Shop and Action Windows */
+#shop-window, #action-window {
+    background-color: #fff;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+#shop-window {
+    height: 60%; /* Specific height for shop window */
+}
+
+
+/* Hero Window */
+#hero-window {
+    background-color: #fff;
+}
+
+#hero-stats {
+    margin-bottom: 1rem;
+}
+
+#hero-image {
+    width: 100%;
+    aspect-ratio: 1;
+    background-color: #e0e0e0;
+    margin-bottom: 1rem;
+}
+
+#item-slots {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.5rem;
+}
+
+.item-slot {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border: 1px solid #ccc;
+    background: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-slot img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.item-slot button {
+    position: absolute;
+    bottom: 2px;
+    font-size: 0.8em;
+    padding: 2px 5px;
+}
+
+.shop-item button[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 5px;
+    max-width: 80%;
+    max-height: 80%;
+    overflow-y: auto;
+}
+
+/* Buttons */
+button {
+    padding: 0.5rem 1rem;
+    margin: 0.25rem;
+    border: none;
+    border-radius: 3px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Form elements */
+textarea {
+    width: 100%;
+    min-height: 100px;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Hero selection */
+#hero-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.hero-option {
+    text-align: center;
+    cursor: pointer;
+}
+
+.hero-option img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    margin-bottom: 0.5rem;
+}
+
+/* Shop Items Grid */
+#shop-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.shop-item {
+    position: relative;
+    cursor: pointer;
+    text-align: center;
+}
+
+.shop-item img {
+    width: 100%;
+    height: auto;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+}
+
+.shop-item.selected img {
+    border-color: #4CAF50;
+}
+
+.shop-item:hover img {
+    border-color: #45a049;
+}
+
+/* Item Details in Status Window */
+#item-details {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+/* Buy Button */
+#buy-item {
+    margin-top: 10px;
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 0.5rem;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+}
+
+.image-option {
+    cursor: pointer;
+    border: 2px solid transparent;
+    padding: 0.25rem;
+}
+
+.image-option img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: contain;
+}
+
+.image-option img.selected {
+    border: 2px solid #4CAF50;
+}
+
+#item-name {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+#item-description {
+    width: 100%;
+    min-height: 100px;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.cell-number {
+    fill: #333;
+    font-size: 12px;
+    pointer-events: none;
+}
+
+.player-token {
+    filter: drop-shadow(0 0 2px rgba(0,0,0,0.5));
+}
+
+#action-window {
+    position: relative; /* Ensure the actionWindow is the positioning context */
+    width: 100%; /* Ensure it takes up the full width of its container */
+    height: 40%; /* Ensure it takes up the full height of its container */
+}
+
+#dice-stats {
+    position: absolute; /* Position the stats absolutely within the actionWindow */
+    bottom: 10px; /* Distance from the bottom */
+    left: 10px; /* Distance from the left */
+    background-color: #f0f0f0; /* Optional: Add a background color */
+    padding: 10px; /* Optional: Add some padding */
+    border: 1px solid #ccc; /* Optional: Add a border */
+    border-radius: 5px; /* Optional: Round the corners */
+}
+
+#dice-stats p {
+    margin: 0; /* Remove default paragraph margins */
+    font-size: 24px; /* Adjust font size if needed */
+}
+
+#hero-image img {
+    width: 90%; /* Limit width to 90% of the heroWindow */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Ensure the image is treated as a block element */
+    margin: 0 auto; /* Center the image horizontally */
+    border-radius: 8px; /* Optional: Add rounded corners for aesthetics */
+}
+
+#move-token2 {
+    position: absolute; /* Position the stats absolutely within the actionWindow */
+    bottom: 60px; /* Distance from the bottom */
+    right: 10px; /* Distance from the left */
+}
+
+#roll-dice2 {
+    position: absolute; /* Position the stats absolutely within the actionWindow */
+    bottom: 100px; /* Distance from the bottom */
+    right: 10px; /* Distance from the left */
+}
+
+#dice-stats2 {
+    position: absolute; /* Position the stats absolutely within the actionWindow */
+    bottom: 10px; /* Distance from the bottom */
+    right: 10px; /* Distance from the left */
+    background-color: #f0f0f0; /* Optional: Add a background color */
+    padding: 10px; /* Optional: Add some padding */
+    border: 1px solid #ccc; /* Optional: Add a border */
+    border-radius: 5px; /* Optional: Round the corners */
+}
+
+/* Counters Section */
+#counters {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-top: 1px solid #ccc;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 columns */
+    grid-template-rows: repeat(2, auto); /* 2 rows */
+    gap: 0.5rem; /* Space between counters */
+}
+
+/* Modal container */
+#runes-modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 1000; /* Ensure it's on top of other elements */
+}
+
+/* Modal content */
+#runes-modal .modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%; /* 90% of the screen width */
+    height: 90%; /* 90% of the screen height */
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow-y: auto; /* Add scroll if content overflows */
+}
+
+/* Runes container */
+.runes-container {
+    display: flex;
+    justify-content: space-between;
+    height: calc(100% - 100px); /* Adjust height to fit within modal */
+    margin-top: 1rem;
+}
+
+/* Bless and Curse lists */
+.bless-list, .curse-list {
+    width: 48%;
+    height: 100%;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    box-sizing: border-box; /* Include padding in width/height */
+    overflow-y: auto; /* Enable scrolling */
+    position: relative;
+    padding-bottom: 50px; /* Add space at the bottom for the button */
+}
+
+/* Add buttons */
+#add-curse {
+    margin-top: 1rem;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+#add-bless {
+    margin-top: 1rem;
+    position: absolute;
+    bottom: 10px;
+    left: 40%;
+}
+
+#random-curse {
+    margin-top: 1rem;
+    position: absolute;
+    bottom: 10px;
+    left: 60%;
+}
+
+#random-bless {
+    margin-top: 1rem;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+#close-runes-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+/* Bless and Curse items */
+.bless-item, .curse-item {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    color: gray; /* Default color for non-active runes */
+}
+
+/* Active runes */
+.bless-item.active, .curse-item.active {
+    color: black; /* Color for active runes */
+}
+
+
+
